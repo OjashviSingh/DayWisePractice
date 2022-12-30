@@ -1,60 +1,44 @@
-declare -A diceResult
-function findMaxMinDice()
-{
-resultDice=("$@")
-max=${resultDice[1]}
-maxDice=1
-min=${resultDice[1]}
-minDice=1
-for ((i=2; i < ${#resultDice[@]} ; i++))
+declare -A dice
+q=0
+w=0
+e=0
+r=0
+t=0
+s=0
+for (( i=1;i<60;i++ ))
 do
-	if [ $max -lt ${resultDice[$i]} ]
-	then
-        max=${resultDice[$i]}
-        maxDice=$i
-    	fi
-
-    	if [ $min -gt ${resultDice[$i]} ]
-   	 then
-        min=${resultDice[$i]}
-        minDice=$i
-    	fi
+ a=$((1+RANDOM%6))
+ if [[ $a -eq 1 ]]
+ then
+  q=$((q+1))
+ elif [[ $a -eq 2 ]]
+ then
+  w=$((w+1))
+ elif [[ $a -eq 3 ]]
+ then
+  e=$((e+1))
+ elif [[ $a -eq 4 ]]
+ then
+  r=$((r+1))
+ elif [[ $a -eq 5 ]]
+ then
+  t=$((t+1))
+ elif [[ $a -eq 6 ]]
+ then
+  s=$((s+1))
+ fi
+if [[ q -eq 10 || w -eq 10 || e -eq 10 || r -eq 10 || t -eq 10 || s -eq 10 ]]
+then
+ break;
+fi
 done
 
-echo "max times $maxDice "
-echo "min times $minDice "
+dice[1]="$q"
+dice[2]="$w"
+dice[3]="$e"
+dice[4]="$r"
+dice[5]="$t"
+dice[6]=
+dice[6]="$s"
 
-}
-
-
-function checkMaxDiceTimes() 
-{
-    prevResult=$1
-    if [  $prevResult -eq 10 ]
-    then
-        isPresentMax=1
-    else
-        isPresentMax=0
-    fi
-
-    echo $isPresentMax
-}
-
-diceResult=(0 0 0 0 0 0)
-while ((1))
-do
-	dice=$((RANDOM%6+1))
-	if [[ $( checkMaxDiceTimes ${diceResult[$dice]} ) -eq 1 ]]
-    	then
-        	break
-    	else
-		(( diceResult[((dice))]++ ))
-    	fi
-done
-#echo "Dice Roll Times \n"
-for i in " ${!diceResult[@]}"
-do
-    echo "$i:${diceResult[$i]}"
-done
-
-findMaxMinDice ${diceResult[@]}
+echo "The stored values in Dictionary are ${dice[@]}"
